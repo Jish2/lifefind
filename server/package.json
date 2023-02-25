@@ -11,10 +11,12 @@
     "author": "jgoon",
     "license": "MIT",
     "dependencies": {
+        "@sendgrid/mail": "^7.7.0",
         "bcrypt": "^5.1.0",
         "express": "^4.18.2",
         "jsonwebtoken": "^9.0.0",
         "mongoose": "^6.10.0",
+        "swot-node": "^2.0.745",
         "validator": "^13.9.0"
     },
     "devDependencies": {
