@@ -169,9 +169,6 @@ const Form1 = ({ setDataPayload }) => {
 					Location of Lost Item (Autocomplete)
 				</FormLabel>
 				<GooglePlacesAutocomplete
-					onChange={(e) => {
-						console.log(e);
-					}}
 					apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
 					selectProps={{
 						placeholder: "Type a location (e.g. CIF)",
