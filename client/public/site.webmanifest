@@ -1,0 +1,30 @@
+{
+    "name": "Lifefind",
+    "short_name": "Lifefind",
+    "icons": [
+        {
+            "src": "/favicons/lifefind.svg",
+            "sizes": "192x192",
+            "type": "image/svg"
+        },
+        {
+            "src": "/favicons/192fav.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/favicons/512fav.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#F79858",
+    "background_color": "#F79858",
+    "display": "standalone",
+    "developer": [
+        {
+            "name": "jgoon",
+            "url": "http://jgoon.dev"
+        }
+    ]
+}
