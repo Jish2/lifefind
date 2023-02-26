@@ -5,6 +5,8 @@ import { extendTheme } from "@chakra-ui/react";
 
 import "@fontsource/be-vietnam-pro";
 
+import { BottomNavigationStyleConfig as BottomNavigation } from "chakra-ui-bottom-navigation";
+
 const fonts = {
 	heading:
 		`'Be Vietnam Pro'` +
@@ -16,13 +18,25 @@ const fonts = {
 
 const colors = {
 	primary: {
-		900: "#1a365d",
-		800: "#153e75",
-		700: "#2a69ac",
+		700: "#E48444",
+		500: "#F79858",
+		300: "#FFAF7A",
+	},
+	navbar: {
+		900: "#ffffff",
+		700: "red",
+		500: "red",
+		300: "#F79858",
 	},
 };
 
-const theme = extendTheme({ fonts, colors });
+const theme = extendTheme({
+	fonts,
+	colors,
+	components: {
+		BottomNavigation,
+	},
+});
 
 function App({ Component, pageProps }) {
 	return (
