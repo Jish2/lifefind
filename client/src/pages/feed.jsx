@@ -51,7 +51,7 @@ export default function Home({ postsFromDB }) {
 
 				<Flex justifyContent="center" flexDirection="column">
 					{data.map((item, index) => {
-						return <Post {...item} />;
+						return <Post {...item} key={index} />;
 					})}
 				</Flex>
 
