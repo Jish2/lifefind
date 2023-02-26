@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import {
 	Progress,
 	Box,
@@ -19,166 +19,51 @@ import {
 	InputRightElement,
 } from "@chakra-ui/react";
 
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
-
-import { ColorPicker } from "chakra-color-picker";
-
-import { TbArrowDownCircle } from "react-icons/tb";
-
 import { useToast } from "@chakra-ui/react";
 
-import ImageUpload from "../ImageUpload";
-
-const Form1 = ({ setDataPayload }) => {
-	const [show, setShow] = useState(false);
+const Form1 = () => {
+	const [show, setShow] = React.useState(false);
 	const handleClick = () => setShow(!show);
-	const colorOptions = [
-		"#F6D258",
-		"#F0CFC7",
-		"#7031A0",
-		"#97D5E0",
-		"#88B14C",
-		"#EF562E",
-		"#D13076",
-		"#5587A2",
-		"#5C7148",
-		"#0C4B8A",
-		"#ffffff",
-		"#EFE8E2",
-		"#BF9C86",
-		"#5B4030",
-		"#000000",
-	];
-
-	const [images, setImages] = useState([]);
-	const [color, setColor] = useState("#F6D258");
-	const [name, setName] = useState("Sample");
-	const [category, setCategory] = useState("other");
-	const [description, setDescription] = useState("description");
-	const [location, setLocation] = useState("");
-
-	// useEffect(() => {
-	// 	console.log(location);
-	// }, [location]);
-
-	function handleSubmit() {
-		// e.preventDefault();
-		// setDataPayload({
-		// 	name: nameRef.current.value,
-		// 	description: descriptionRef.current.value,
-		// 	category: categoryRef.current.value,
-		// 	imageBase64: images[0]?.data_url,
-		// 	color: color,
-		// 	location: [40, -88],
-		// });
-		console.log({
-			name: name,
-			description: description,
-			category: category,
-			imageBase64: images[0]?.data_url,
-			color: color,
-			location: location,
-		});
-	}
-
-	useEffect(() => {
-		setDataPayload({
-			name: name,
-			description: description,
-			category: category,
-			imageBase64: images[0]?.data_url,
-			color: color,
-			location: location?.value?.place_id,
-		});
-	}, [name, description, category, images, color, location]);
-
 	return (
 		<>
-			<Heading w="100%" textAlign={"center"} fontWeight="normal" mb="4%" size="md">
-				Add an image
+			<Heading w="100%" textAlign={"center"} fontWeight="normal" mb="2%" size="md">
+				User Registration
 			</Heading>
-
-			<ImageUpload images={images} setImages={setImages} />
-
-			<FormControl mt={3}>
-				<FormLabel size="sm" htmlFor="email" fontWeight={"normal"}>
-					Name of Item
-				</FormLabel>
-				<Input
-					onChange={(e) => {
-						setName(e.target.value);
-					}}
-					size="sm"
-					borderRadius={5}
-					id="email"
-					type="email"
-				/>
-			</FormControl>
-			<Flex width="100%" mt={3} justifyContent="flex-start">
-				<FormControl mr="10px" width="100%">
-					{/* <FormLabel htmlFor="first-name" fontWeight={"normal"}>
-						Category
-					</FormLabel> */}
-					<Select
-						placeholder="Category"
-						onChange={(e) => {
-							setCategory(e.target.value);
-						}}
-					>
-						<option value="wallet">Wallet</option>
-						<option value="id">Identification Card</option>
-						<option value="airpods">Airpods/Headphones</option>
-						<option value="clothing">Clothing</option>
-						<option value="technology">Technology</option>
-						<option value="other">Other</option>
-					</Select>
+			<Flex>
+				<FormControl mr="5%">
+					<FormLabel htmlFor="first-name" fontWeight={"normal"}>
+						First name
+					</FormLabel>
+					<Input id="first-name" placeholder="First name" />
 				</FormControl>
 
-				<FormControl width="fit-content">
-					{/* <FormLabel htmlFor="last-name" fontWeight={"normal"}>
-						Color
-					</FormLabel> */}
-					{/* <Select placeholder="Color">
-						<option value="option1">Option 1</option>
-						<option value="option2">Option 2</option>
-						<option value="option3">Option 3</option>
-					</Select> */}
-					<ColorPicker
-						colors={colorOptions}
-						onChange={(color) => {
-							setColor(color);
-						}}
-					/>
-
-					{/* <Input id="last-name" placeholder="First name" /> */}
+				<FormControl>
+					<FormLabel htmlFor="last-name" fontWeight={"normal"}>
+						Last name
+					</FormLabel>
+					<Input id="last-name" placeholder="First name" />
 				</FormControl>
 			</Flex>
-			<FormControl mt={3}>
-				<FormLabel htmlFor="text" fontWeight={"normal"}>
-					Description
+			<FormControl mt="2%">
+				<FormLabel htmlFor="email" fontWeight={"normal"}>
+					Email address
 				</FormLabel>
-				<Textarea
-					onChange={(e) => {
-						setDescription(e.target.value);
-					}}
-					placeholder="Describe your item. Specify any notable features."
-				/>
+				<Input id="email" type="email" />
+				<FormHelperText>We'll never share your email.</FormHelperText>
 			</FormControl>
-			<FormControl mt={3}>
-				<FormLabel htmlFor="text" fontWeight={"normal"}>
-					Location of Lost Item (Autocomplete)
+
+			<FormControl>
+				<FormLabel htmlFor="password" fontWeight={"normal"} mt="2%">
+					Password
 				</FormLabel>
-				<GooglePlacesAutocomplete
-					onChange={(e) => {
-						console.log(e);
-					}}
-					apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
-					selectProps={{
-						placeholder: "Type a location (e.g. CIF)",
-						location,
-						onChange: setLocation,
-					}}
-				/>
+				<InputGroup size="md">
+					<Input pr="4.5rem" type={show ? "text" : "password"} placeholder="Enter password" />
+					<InputRightElement width="4.5rem">
+						<Button h="1.75rem" size="sm" onClick={handleClick}>
+							{show ? "Hide" : "Show"}
+						</Button>
+					</InputRightElement>
+				</InputGroup>
 			</FormControl>
 		</>
 	);

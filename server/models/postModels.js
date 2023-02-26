@@ -4,16 +4,28 @@ const Schema = mongoose.Schema;
 
 const postSchema = new Schema(
 	{
-		title: {
+		name: {
 			type: String,
 			required: true,
 		},
-		reps: {
-			type: Number,
+		description: {
+			type: String,
+			required: false,
+		},
+		category: {
+			type: String,
 			required: true,
 		},
-		load: {
-			type: Number,
+		color: {
+			type: String,
+			required: false,
+		},
+		imageURL: {
+			type: String,
+			required: false,
+		},
+		location: {
+			type: [Number],
 			required: true,
 		},
 	},

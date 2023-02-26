@@ -9,7 +9,7 @@ export default function Document() {
 				<meta httpEquiv="X-UA-Compatible" content="IE=edge" />
 				<meta charSet="UTF-8" />
 
-				<link rel="shortcut icon" href="/lifefind-orange.svg" />
+				<link rel="shortcut icon" href="/favicons/resized.png" />
 				<link rel="apple-touch-icon" sizes="180x180" href="/favicons/180fav.png" />
 				<link rel="icon" type="image/png" sizes="192x192" href="/favicons/192fav.png" />
 				<link rel="icon" type="image/png" sizes="32x32" href="/favicons/32fav.png" />

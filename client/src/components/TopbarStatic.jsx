@@ -30,20 +30,8 @@ import { useState } from "react";
 export default function WithSubnavigation() {
 	const { isOpen, onToggle } = useDisclosure();
 
-	const [categories, setCategories] = useState([
-		{ active: false, type: "All", image: "https://em-content.zobj.net/thumbs/120/apple/325/magnifying-glass-tilted-left_1f50d.png" },
-		{ active: false, type: "Wallet", image: "https://i.ibb.co/FBvdDmy/12975495-removebg-preview.png" },
-		{ active: false, type: "ID", image: "https://em-content.zobj.net/thumbs/120/apple/325/identification-card_1faaa.png" },
-		{ active: false, type: "AirPods", image: "https://em-content.zobj.net/thumbs/120/apple/325/headphone_1f3a7.png" },
-		{ active: false, type: "Clothing", image: "https://em-content.zobj.net/thumbs/120/apple/325/necktie_1f454.png" },
-		{ active: false, type: "Technology", image: "https://em-content.zobj.net/thumbs/120/apple/325/mobile-phone_1f4f1.png" },
-		{ active: false, type: "Other", image: "https://em-content.zobj.net/thumbs/160/apple/118/black-question-mark-ornament_2753.png" },
-	]);
-
-	const [activeCategories, setActiveCategories] = useState(Array(categories.length).fill(false));
-
 	return (
-		<Box position="fixed" top="0" zIndex={100}>
+		<Box position="fixed" zIndex={100}>
 			<Flex flexDirection="column">
 				<Flex
 					bg={useColorModeValue("primary.500", "gray.800")}
@@ -104,67 +92,6 @@ export default function WithSubnavigation() {
 						</Button> */}
 					</Stack>
 				</Flex>
-
-				<div style={{ background: "var(--chakra-colors-primary-500)" }}>
-					<Container
-						py={2}
-						bg={useColorModeValue("primary.500", "gray.800")}
-						borderBottom={1}
-						borderStyle={"solid"}
-						borderColor={useColorModeValue("whiteAlpha.200", "gray.900")}
-						width="100vw"
-					>
-						<Input
-							p={2}
-							placeholder="Search for an item..."
-							color="white"
-							variant={"filled"}
-							_active={{ background: "white" }}
-						/>
-						<Flex pt={2} pb={4} gap={2} w="100%" flexDirection={"row"} overflowX="scroll">
-							{categories.map(({ type, image }, index) => (
-								// <Tag size={"lg"} key={index} borderRadius="full" variant="solid" colorScheme="green">
-								// 	<TagLabel>{category}</TagLabel>
-								// 	<TagCloseButton />
-								// </Tag>
-								<Tag
-									key={index}
-									size="lg"
-									borderRadius="full"
-									minWidth="max-content"
-									style={{
-										// backgroundColor: activeCategories[index] ? "grey" : "white",
-										color: activeCategories[index] ? "black" : "white",
-
-										backgroundColor: activeCategories[index] ? "white" : "#FFB98B",
-
-										// border: activeCategories[index] ? "solid 2px #C4733D" : "solid 2px white",
-										// opacity: "0",
-										// boxShadow: activeCategories[index] ? "inset 0 0 10px 0px rgba(0, 0, 0, .8)" : "none",
-										transition: "background-color .5s ease-out, color .2s ease-out",
-									}}
-									onClick={() => {
-										setActiveCategories((prev) => {
-											if (index === 0) {
-												if (prev[0] === true) return Array(categories.length).fill(false);
-												else return Array(categories.length).fill(true);
-											} else {
-												return prev.map((item, idx) => {
-													if (index === idx) return !item;
-													else if (index === 0) return false;
-													else return item;
-												});
-											}
-										});
-									}}
-								>
-									<Image src={image} w={4} h={4} ml={-1} mr={2} />
-									<TagLabel>{type}</TagLabel>
-								</Tag>
-							))}
-						</Flex>
-					</Container>
-				</div>
 
 				<Collapse in={isOpen} animateOpacity>
 					<MobileNav />

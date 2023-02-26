@@ -146,13 +146,11 @@ const PreviewUploadedImage = forwardRef((props, ref) => {
 	);
 });
 
-export default function ImageUpload() {
+export default function ImageUpload({ images, setImages }) {
 	const controls = useAnimation();
 	const startAnimation = () => controls.start("hover");
 	// const startAnimation = () => controls.start();
 	const stopAnimation = () => controls.stop();
-
-	const [images, setImages] = useState([]);
 
 	const onChange = (imageList, addUpdateIndex) => {
 		// data for submit
@@ -224,7 +222,7 @@ export default function ImageUpload() {
 													<Heading fontSize="lg" color="gray.700" fontWeight="bold">
 														Click to upload or take a photo
 													</Heading>
-													<Text fontWeight="light">or drop images here</Text>
+													{/* <Text fontWeight="light">or drop images here</Text> */}
 												</Stack>
 											</Stack>
 										</Box>

@@ -37,6 +37,7 @@ const Navbar = ({ onOpen }) => {
 				MsUserSelect: "none",
 				userSelect: "none",
 				WebkitTapHighlightColor: "transparent",
+				zIndex: 100,
 			}}
 		>
 			<BottomNavigationItem
@@ -51,17 +52,17 @@ const Navbar = ({ onOpen }) => {
 				<BottomNavigationLabel>Home</BottomNavigationLabel>
 			</BottomNavigationItem>
 
-			<BottomNavigationItem m={0} _active={{}} value="/map">
-				<BottomNavigationIcon as={TbMap} w={iconWH[0]} h={iconWH[1]} />
-				<BottomNavigationLabel>Map</BottomNavigationLabel>
-			</BottomNavigationItem>
-
 			<BottomNavigationItem m={0} _active={{}} onClick={onOpen}>
 				<BottomNavigationIcon as={TbSquarePlus} w={iconWH[0]} h={iconWH[1]} />
 				<BottomNavigationLabel>Create</BottomNavigationLabel>
 			</BottomNavigationItem>
 
-			<BottomNavigationItem m={0} _active={{}} value="/">
+			<BottomNavigationItem m={0} _active={{}} value="/map">
+				<BottomNavigationIcon as={TbMap} w={iconWH[0]} h={iconWH[1]} />
+				<BottomNavigationLabel>Map</BottomNavigationLabel>
+			</BottomNavigationItem>
+
+			{/* <BottomNavigationItem m={0} _active={{}} value="/">
 				<BottomNavigationIcon as={TbInfoCircle} w={iconWH[0]} h={iconWH[1]} />
 				<BottomNavigationLabel>Info</BottomNavigationLabel>
 			</BottomNavigationItem>
@@ -69,7 +70,7 @@ const Navbar = ({ onOpen }) => {
 			<BottomNavigationItem m={0} _active={{}} value="/dashboard">
 				<BottomNavigationIcon as={TbUser} w={iconWH[0]} h={iconWH[1]} />
 				<BottomNavigationLabel>Profile</BottomNavigationLabel>
-			</BottomNavigationItem>
+			</BottomNavigationItem> */}
 		</BottomNavigation>
 	);
 };

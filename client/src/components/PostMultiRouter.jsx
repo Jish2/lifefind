@@ -7,6 +7,41 @@ export default function multistep() {
 	const toast = useToast();
 	const [step, setStep] = useState(1);
 	const [progress, setProgress] = useState(33.33);
+	const [coord, setCoord] = useState();
+
+	const [dataPayload, setDataPayload] = useState({
+		name: "Test name!",
+		description: "Test description",
+		category: "airpods",
+		imageBase64: "",
+		color: "#FFAF7A",
+		location: "",
+	});
+
+	function sendThePost() {
+		fetch(`http://localhost:3001/api/post`, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(dataPayload),
+		})
+			.then((response) => response.json())
+			.then(function (data) {
+				console.log(data);
+
+				toast({
+					title: "Lost item posted.",
+					// description: "We've created your account for you.",
+					status: "success",
+					duration: 3000,
+					isClosable: true,
+				});
+				// window.location.reload(true);
+			})
+			.catch(function (error) {
+				console.error(error);
+			});
+	}
+
 	return (
 		<>
 			<form
@@ -23,10 +58,12 @@ export default function multistep() {
 
 				<Progress w="100%" borderRadius={5} value={progress} mb="5%" mx="5%" isAnimated></Progress>
 
-				{step === 1 ? <Form1 /> : step === 2 ? <Form2 /> : <Form3 />}
+				{/* {step === 1 ? <Form1 setDataPayload={setDataPayload} /> : step === 2 ? <Form2 /> : <Form3 />} */}
+				<Form1 setDataPayload={setDataPayload} />
+
 				<ButtonGroup mt="5%" w="100%">
-					<Flex w="100%" justifyContent="space-between">
-						<Flex w="100%">
+					<Flex w="100%" justifyContent="flex-end">
+						{/* <Flex w="100%">
 							<Button
 								onClick={() => {
 									setStep(step - 1);
@@ -60,9 +97,27 @@ export default function multistep() {
 							>
 								Next
 							</Button>
-						</Flex>
-						{/* submit button */}
-						{step === 3 ? (
+						</Flex> */}
+
+						<Button
+							w="7rem"
+							colorScheme="primary"
+							variant="solid"
+							onClick={() => {
+								// if (navigator.geolocation) {
+								// 	navigator.geolocation.getCurrentPosition(function showPosition(position) {
+								// 		console.log(position.coords.latitude, position.coords.longitude);
+								// 	});
+								// }
+								console.log(dataPayload);
+								sendThePost();
+							}}
+							size="sm"
+						>
+							Submit
+						</Button>
+
+						{/* {step === 3 ? (
 							<Button
 								w="7rem"
 								colorScheme="red"
@@ -80,7 +135,7 @@ export default function multistep() {
 							>
 								Submit
 							</Button>
-						) : null}
+						) : null} */}
 					</Flex>
 				</ButtonGroup>
 				{/* </Box> */}
