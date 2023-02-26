@@ -124,10 +124,10 @@ function Map() {
 	return (
 		<div style={{ marginTop: "0px", background: "green", width: "10px" }}>
 			<GoogleMap zoom={15} center={center} mapContainerStyle={containerStyle} onClick={() => setActiveMarker(null)}>
+				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1596456, lng: -88.2235755 }} />
 				<Marker position={center} />
 				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1196456, lng: -88.2235755 }} />
 				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1026456, lng: -88.2235755 }} />
-				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1596456, lng: -88.2235755 }} />
 
 				{markers.map(({ id, name, position, icon }) => (
 					<Marker icon={icon} key={id} position={position} onClick={() => handleActiveMarker(id)}>

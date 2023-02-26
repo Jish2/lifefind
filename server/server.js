@@ -36,29 +36,6 @@ app.use((req, res, next) => {
 app.use("/api/post", postRoutes);
 app.use("/api/user", userRoutes);
 
-// import cloudinary from "cloudinary";
-// cloudinary.v2;
-
-// // Configuration
-// cloudinary.config({
-// 	cloud_name: "dvj645xhp",
-// 	api_key: "937249881231163",
-// 	api_secret: "VTurV1QUGks4iqgBEC5HfW2hLn4",
-// });
-
-// Upload
-
-// const res = cloudinary.uploader.upload("https://upload.wikimedia.org/wikipedia/commons/a/ae/Olympic_flag.jpg", {
-// 	public_id: "olympic_flag",
-// });
-
-// res.then((data) => {
-// 	console.log(data);
-// 	console.log(data.secure_url);
-// }).catch((err) => {
-// 	console.log(err);
-// });
-
 // connect to db
 mongoose
 	.connect(process.env.MONGO_URI)

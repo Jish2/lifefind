@@ -9,8 +9,8 @@ import fetch from "cross-fetch";
 // Configuration
 cloudinary.config({
 	cloud_name: "dvj645xhp",
-	api_key: "937249881231163",
-	api_secret: "VTurV1QUGks4iqgBEC5HfW2hLn4",
+	api_key: process.env.CLOUDINARY_API_KEY,
+	api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 // get all post

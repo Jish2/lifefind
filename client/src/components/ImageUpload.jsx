@@ -160,7 +160,14 @@ export default function ImageUpload({ images, setImages }) {
 
 	return (
 		<>
-			<ImageUploading multiple value={images} onChange={onChange} maxNumber={1} dataURLKey="data_url" acceptType={["jpg", "png"]}>
+			<ImageUploading
+				multiple
+				value={images}
+				onChange={onChange}
+				maxNumber={1}
+				dataURLKey="data_url"
+				acceptType={["jpeg", "jpg", "png"]}
+			>
 				{({ imageList, onImageUpload, onImageRemoveAll, onImageUpdate, onImageRemove, isDragging, dragProps }) => (
 					// write your building UI
 					<>
