@@ -5,10 +5,7 @@ import swot from "swot-node";
 
 import sgMail from "@sendgrid/mail";
 
-import {
-	verificationTemplate,
-	verificationTemplateTextFallback,
-} from "../email-templates/verification.js";
+import { verificationTemplate, verificationTemplateTextFallback } from "../email-templates/verification.js";
 
 // sgMail.setApiKey("SG." + process.env.SENDGRID_API_KEY);
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
@@ -39,6 +36,18 @@ userSchema.statics.signup = async function (email, password) {
 		throw Error("Email not valid");
 	}
 
+	const academic = await swot.isAcademic(email);
+
+	if (!academic) {
+		// throw Error("Email not academic!");
+	}
+
+	// const school = await swot.getSchoolName(email);
+
+	// let name = "Unknown University or Institution";
+
+	// if (school !== true || school !== false) name = school;
+
 	// password validation (temporarily disabled)
 
 	// if (!validator.isStrongPassword(password)) {
@@ -58,22 +67,23 @@ userSchema.statics.signup = async function (email, password) {
 
 	const emailArguments = {
 		title: "Email Verification (title)",
-		topLogoURL: "https://fullsphere.co.uk/misc/free-template/images/logo-black-background.jpg", // 360x170
-		bottomLogoURL:
-			"https://fullsphere.co.uk/misc/free-template/images/logo-black-background.jpg", // 360x170
+		name: "Some Name!",
+		topLogoURL: "http://localhost:3000/favicons/lifefind.svg", // 360x170
+		bottomLogoURL: "http://localhost:3000/favicons/lifefind-white.svg", // 360x170
+
 		verificationLink: "https://google.com/",
 		unsubscribeLink: "https://google.com/",
 	};
 
-	const msg = {
-		to: email, // Change to your recipient
-		from: "email-verification@lifespring.tech", // Change to your verified sender
-		subject: "Lifespring Verification Code",
-		text: verificationTemplateTextFallback(emailArguments),
-		html: verificationTemplate(emailArguments),
-	};
 	sgMail
-		.send(msg)
+		.send({
+			to: email, // Change to your recipient
+			from: "email-verification@lifespring.tech", // Change to your verified sender
+			// from: "jgoon2@illinois.edu", // Change to your verified sender
+			subject: "Lifespring Verification Code",
+			text: verificationTemplateTextFallback(emailArguments),
+			html: verificationTemplate(emailArguments),
+		})
 		.then(() => {
 			console.log("Email sent");
 		})
