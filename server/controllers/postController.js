@@ -62,7 +62,7 @@ const createPost = async (req, res) => {
 	const lat = data && data.result.geometry.location.lat;
 	const lng = data && data.result.geometry.location.lng;
 
-	// console.log(lat, lng);
+	console.log(lat, lng);
 
 	let emptyFields = [];
 

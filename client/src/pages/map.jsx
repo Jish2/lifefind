@@ -7,14 +7,32 @@ import { Spinner, useDisclosure, Flex, Spacer } from "@chakra-ui/react";
 import { InfoWindow, useLoadScript, Marker, GoogleMap } from "@react-google-maps/api";
 import { useMemo, useState, useEffect } from "react";
 
+const googlelibs = ["places"];
+
 const MapView = () => {
+	const [data, setData] = useState([]);
+
+	async function fetchPosts() {
+		try {
+			const response = await fetch("http://localhost:3001/api/post");
+			const results = await response.json();
+
+			console.log(results);
+
+			setData(results);
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	useEffect(() => {
 		document.body.style.overflowY = "hidden";
+		fetchPosts();
 	}, []);
 
-	const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY });
+	const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY, libraries: googlelibs });
 
 	return (
 		<div style={{ height: "100vh", position: "relative" }}>
@@ -38,7 +56,7 @@ const MapView = () => {
 					<Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
 				</div>
 			) : (
-				<Map style={{ width: "100%" }} />
+				<Map style={{ width: "100%" }} data={data} />
 			)}
 
 			<CreatePostModal onClose={onClose} isOpen={isOpen} />
@@ -47,7 +65,7 @@ const MapView = () => {
 	);
 };
 
-function Map() {
+function Map({ data }) {
 	const containerStyle = {
 		width: "100vw",
 		// minHeight: "100%",
@@ -76,6 +94,14 @@ function Map() {
 		other: "https://i.ibb.co/VJ6p5CS/other.png",
 		technology: "https://i.ibb.co/WztBw3s/technology.png",
 		wallet: "https://i.ibb.co/cYSm57c/wallet.png",
+	};
+	const itemIcons64 = {
+		airpods: "http://localhost:3000/favicons/64x64/airpods.png",
+		clothing: "http://localhost:3000/favicons/64x64/clothing.png",
+		id: "http://localhost:3000/favicons/64x64/id.png",
+		other: "http://localhost:3000/favicons/64x64/other.png",
+		technology: "http://localhost:3000/favicons/64x64/technology.png",
+		wallet: "http://localhost:3000/favicons/64x64/wallet.png",
 	};
 
 	const markers = [
@@ -123,20 +149,19 @@ function Map() {
 
 	return (
 		<div style={{ marginTop: "0px", background: "green", width: "10px" }}>
-			<GoogleMap zoom={15} center={center} mapContainerStyle={containerStyle} onClick={() => setActiveMarker(null)}>
-				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1596456, lng: -88.2235755 }} />
-				<Marker position={center} />
+			<GoogleMap zoom={14} center={center} mapContainerStyle={containerStyle} onClick={() => setActiveMarker(null)}>
 				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1196456, lng: -88.2235755 }} />
+				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1596456, lng: -88.2235755 }} />
 				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1026456, lng: -88.2235755 }} />
+				<Marker position={center} />
 
-				{markers.map(({ id, name, position, icon }) => (
-					<Marker icon={icon} key={id} position={position} onClick={() => handleActiveMarker(id)}>
-						{activeMarker === id ? (
-							<InfoWindow onCloseClick={() => setActiveMarker(null)}>
-								<div>{name}</div>
-							</InfoWindow>
-						) : null}
-					</Marker>
+				{data.map(({ name, icon, category, location }, id) => (
+					<Marker
+						icon={itemIcons64[`${category}`]}
+						key={id}
+						position={{ lat: location[0], lng: location[1] }}
+						// onClick={() => handleActiveMarker(id)}
+					></Marker>
 				))}
 				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1096456, lng: -88.2235755 }} />
 			</GoogleMap>
@@ -145,3 +170,9 @@ function Map() {
 }
 
 export default MapView;
+
+// {activeMarker === id ? (
+//     <InfoWindow onCloseClick={() => setActiveMarker(null)}>
+//         <div>{name}</div>
+//     </InfoWindow>
+// ) : null}
