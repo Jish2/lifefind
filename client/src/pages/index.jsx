@@ -20,11 +20,14 @@ import { BottomNavigation } from "chakra-ui-bottom-navigation";
 import Navbar from "../components/Navbar";
 import Head from "next/head";
 
+import { useRouter } from "next/router";
+
 import TopbarStatic from "../components/TopbarStatic";
 import CreatePostModal from "../components/CreatePostModal";
 
 export default function Home() {
 	const { isOpen, onOpen, onClose } = useDisclosure();
+	const router = useRouter();
 
 	return (
 		<>
@@ -85,6 +88,9 @@ export default function Home() {
 							<Text color={"gray.500"}>Walk through our quick tutorial and learn how you can use Lifefind.</Text>
 							<Stack spacing={{ base: 4, sm: 6 }} direction={{ base: "column", sm: "row" }}>
 								<Button
+									onClick={() => {
+										router.push("/feed");
+									}}
 									rounded={"full"}
 									size={"lg"}
 									fontWeight={"normal"}
@@ -156,7 +162,14 @@ export default function Home() {
 					>
 						<Flex flex={1} justify={"center"} align={"center"} position={"relative"} w={"full"}>
 							<Blob w={"150%"} h={"150%"} position={"absolute"} top={"-20%"} left={"-50%"} zIndex={-1} color="primary.300" />
-							<Image alt={"Hero Image"} fit="contain" align={"center"} w={"100%"} h={"100%"} src="" />
+							<Image
+								alt={"Hero Image"}
+								fit="contain"
+								align={"center"}
+								w={"100%"}
+								h={"100%"}
+								src="https://i.ibb.co/BPPYr63/image.png"
+							/>
 						</Flex>
 						<Stack flex={1} spacing={{ base: 5, md: 10 }}>
 							<Heading
@@ -193,7 +206,7 @@ export default function Home() {
 									Students{" "}
 								</Text>
 							</Heading>
-							<Text color={"gray.500"}>Walk through our quick tutorial and learn how you can use Lifefind.</Text>
+							{/* <Text color={"gray.500"}>Walk through our quick tutorial and learn how you can use Lifefind.</Text> */}
 						</Stack>
 					</Stack>
 				</Container>
