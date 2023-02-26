@@ -35,7 +35,7 @@ export default function multistep() {
 					duration: 3000,
 					isClosable: true,
 				});
-				// window.location.reload(true);
+				window.location.reload(true);
 			})
 			.catch(function (error) {
 				console.error(error);
