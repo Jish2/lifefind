@@ -8,7 +8,7 @@ export default function ProductSimple({ name, category, description, color, imag
 	const [addy, setAddy] = useState("");
 
 	useEffect(() => {
-		// coordsToAddress(location[0], location[1]);
+		coordsToAddress(location[0], location[1]);
 		// placeToAddy();
 	}, []);
 
@@ -24,7 +24,7 @@ export default function ProductSimple({ name, category, description, color, imag
 			`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`
 		);
 		const data = await res.json();
-		console.log(data.results[0].formatted_address);
+		// console.log(data.results[0].formatted_address);
 		setAddy(data?.results[0]?.formatted_address);
 	}
 
@@ -55,6 +55,7 @@ export default function ProductSimple({ name, category, description, color, imag
 						top: 5,
 						left: 0,
 						backgroundImage: `url(${imageURL})`,
+						backgrounColor: "var(--chakra-colors-gray-200)",
 						filter: "blur(15px)",
 						zIndex: -1,
 					}}
@@ -91,7 +92,7 @@ export default function ProductSimple({ name, category, description, color, imag
 					<Flex flexDirection="row" alignItems="center" width="100%" color={"gray.500"}>
 						<Icon as={TbMapPin} w={5} h={5} ml={1} mr={1} />
 						<Text textOverflow="ellipsis" noOfLines={1}>
-							{/* {addy} */}
+							{addy}
 						</Text>
 						<Spacer />
 						<Button size="sm" ml={2} p={4} colorScheme="primary">
