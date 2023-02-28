@@ -4,42 +4,152 @@ import CreatePostModal from "../components/CreatePostModal";
 
 import { Spinner, useDisclosure, Flex, Spacer } from "@chakra-ui/react";
 
-import { InfoWindow, useLoadScript, Marker, GoogleMap } from "@react-google-maps/api";
-import { useMemo, useState, useEffect } from "react";
+import { InfoWindow, useLoadScript, MarkerF, GoogleMap } from "@react-google-maps/api";
+import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 
 const googlelibs = ["places"];
 
 const MapView = () => {
+	const itemIcons = {
+		airpods: "https://i.ibb.co/DQp9vyH/airpods.png",
+		clothing: "https://i.ibb.co/8rCxqSD/clothing.png",
+		id: "https://i.ibb.co/Wxkgjf3/id.png",
+		other: "https://i.ibb.co/PMGNwf6/other.png",
+		technology: "https://i.ibb.co/G5nQNgX/technology.png",
+		wallet: "https://i.ibb.co/m5pYJtz/wallet.png",
+		female: "https://i.ibb.co/dQ5txnL/female.png",
+		male: "https://i.ibb.co/PczktbS/male.png",
+	};
+
+	const iconSize = 70;
+
+	const map = useRef();
+
+	const libraries = useMemo(() => ["places"], []);
+	const center = useMemo(() => ({ lat: 40.1075, lng: -88.2272 }), []);
+
 	const [data, setData] = useState([]);
+	const [activeMarker, setActiveMarker] = useState();
+	const [allLoaded, setAllLoaded] = useState(false);
+	const [currentCenter, setCurrentCenter] = useState(center);
+	const [currentPosition, setCurrentPosition] = useState();
+
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
+	const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY, libraries: libraries });
+
+	function findMeClick() {
+		if (navigator.geolocation) {
+			localStorage.setItem("locationPermission", true);
+			// navigator.geolocation.getCurrentPosition(function showPosition(position) {
+			// 	console.log(position.coords.latitude, position.coords.longitude);
+			// });
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					// console.log(position);
+					setCurrentPosition([position.coords.latitude, position.coords.longitude]);
+					performPan({ lat: position.coords.latitude, lng: position.coords.longitude });
+				},
+				() => null
+			);
+		}
+	}
+
+	const performPan = useCallback(({ lat, lng }) => {
+		map.current.panTo({ lat, lng });
+		map.current.setZoom(17);
+	}, []);
+
+	const onMapLoad = useCallback((mapObject) => {
+		// create reference for initial map load
+		map.current = mapObject;
+	}, []);
 
 	async function fetchPosts() {
 		try {
 			const response = await fetch("http://localhost:3001/api/post");
 			const results = await response.json();
-
-			console.log(results);
-
+			// console.log(results);
 			setData(results);
 		} catch (error) {
 			console.error(error);
 		}
 	}
 
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	const handleActiveMarker = (e, marker) => {
+		// what do we do when marker is clicked?
+		if (marker === activeMarker) return;
+
+		const lat = e.latLng.lat();
+		const lng = e.latLng.lng();
+
+		performPan({
+			lat: lat,
+			lng: lng,
+		});
+
+		// setCurrentCenter({ lat: lat, lng: lng });
+
+		setActiveMarker(marker);
+	};
+
+	// externally set map controls (not provided in wrapper)
+	function handleMapReady(map) {
+		map.setOptions({
+			draggableCursor: "default",
+			draggingCursor: "pointer",
+			gestureHandling: "greedy",
+
+			mapTypeControl: false,
+
+			streetViewControl: false,
+			rotateControl: false,
+			fullscreenControl: false,
+			// scaleControl: false,
+			// scaleControlOptions: {
+			// 	// position: google.maps.ScaleControlOptions.RIGHT_CENTER,
+			// 	position: google.maps.ScaleControlOptions.RIGHT_CENTER,
+			// },
+			// mapTypeControlOptions: {
+			// 	style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR,
+			// 	position: google.maps.ControlPosition.RIGHT_CENTER,
+			// },
+
+			zoomControl: true,
+			zoomControlOptions: {
+				position: google.maps.ControlPosition.RIGHT_CENTER,
+			},
+		});
+	}
 
 	useEffect(() => {
 		document.body.style.overflowY = "hidden";
+		document.documentElement.style.overflowY = "hidden";
 		fetchPosts();
+		if (!navigator.geolocation) {
+			localStorage.setItem("locationPermission", false);
+		} else if (localStorage.getItem("locationPermission") === "true") {
+			navigator.geolocation.getCurrentPosition(
+				(position) => {
+					setCurrentPosition([position.coords.latitude, position.coords.longitude]);
+				},
+				() => null
+			);
+		}
 	}, []);
 
-	const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY, libraries: googlelibs });
+	useEffect(() => {
+		if (isLoaded && data) {
+			setAllLoaded(true);
+		}
+	}, [isLoaded]);
 
 	return (
-		<div style={{ height: "100vh", position: "relative" }}>
-			<Topbar />
+		<div style={{ height: "100vh", position: "relative", overflowY: "hidden" }}>
+			<Topbar findMeClick={findMeClick} />
 			{/* <div style={{ width: "10px", height: "173px" }}></div> */}
 
-			{!isLoaded ? (
+			{!allLoaded ? (
 				<div
 					style={{
 						width: "100%",
@@ -56,7 +166,43 @@ const MapView = () => {
 					<Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />
 				</div>
 			) : (
-				<Map style={{ width: "100%" }} data={data} />
+				<GoogleMap
+					// ref={map}
+					zoom={14}
+					center={currentCenter}
+					mapContainerStyle={{
+						width: "100vw",
+						height: "100vh",
+					}}
+					onClick={() => setActiveMarker(null)}
+					clickableIcons={false}
+					onLoad={(map) => {
+						handleMapReady(map);
+						onMapLoad(map);
+					}}
+				>
+					{currentPosition && (
+						<MarkerF
+							icon={{
+								url: itemIcons["male"],
+								scaledSize: new google.maps.Size(iconSize, iconSize), // scaled size
+							}}
+							position={{ lat: currentPosition[0], lng: currentPosition[1] }}
+							onClick={handleActiveMarker}
+						></MarkerF>
+					)}
+					{data.map(({ name, icon, category, location }, id) => (
+						<MarkerF
+							icon={{
+								url: itemIcons[`${category}`],
+								scaledSize: new google.maps.Size(iconSize, iconSize), // scaled size
+							}}
+							key={id}
+							position={{ lat: location[0], lng: location[1] }}
+							onClick={(e) => handleActiveMarker(e, id)}
+						></MarkerF>
+					))}
+				</GoogleMap>
 			)}
 
 			<CreatePostModal onClose={onClose} isOpen={isOpen} />
@@ -65,114 +211,10 @@ const MapView = () => {
 	);
 };
 
-function Map({ data }) {
-	const containerStyle = {
-		width: "100vw",
-		// minHeight: "100%",
-		height: "100vh",
-		// height: "500px",
-	};
-
-	const center = {
-		lat: 40.1075,
-		lng: -88.2272,
-	};
-
-	const itemIcons = {
-		airpods: "https://i.ibb.co/qgTFyJH/airpods.png",
-		clothing: "https://i.ibb.co/qkZs2h3/clothing.png",
-		id: "https://i.ibb.co/vkBsNJB/id.png",
-		other: "https://i.ibb.co/xKbpvtZ/other.png",
-		technology: "https://i.ibb.co/p0WpyjM/technology.png",
-		wallet: "https://i.ibb.co/jVsmmrV/wallet.png",
-	};
-
-	const itemIcons32 = {
-		airpods: "https://i.ibb.co/CPYQTyS/airpods.png",
-		clothing: "https://i.ibb.co/yq7WN06/clothing.png",
-		id: "https://i.ibb.co/cvz9PNy/id.png",
-		other: "https://i.ibb.co/VJ6p5CS/other.png",
-		technology: "https://i.ibb.co/WztBw3s/technology.png",
-		wallet: "https://i.ibb.co/cYSm57c/wallet.png",
-	};
-	const itemIcons64 = {
-		airpods: "http://localhost:3000/favicons/64x64/airpods.png",
-		clothing: "http://localhost:3000/favicons/64x64/clothing.png",
-		id: "http://localhost:3000/favicons/64x64/id.png",
-		other: "http://localhost:3000/favicons/64x64/other.png",
-		technology: "http://localhost:3000/favicons/64x64/technology.png",
-		wallet: "http://localhost:3000/favicons/64x64/wallet.png",
-	};
-
-	const markers = [
-		{
-			id: 1,
-			name: "Chicago, Illinois",
-			position: { lat: 41.881832, lng: -87.623177 },
-			icon: "https://i.ibb.co/CPYQTyS/airpods.png",
-		},
-		{
-			id: 2,
-			name: "Denver, Colorado",
-			position: { lat: 39.739235, lng: -104.99025 },
-			icon: itemIcons32.technology,
-		},
-		{
-			id: 3,
-			name: "Los Angeles, California",
-			position: { lat: 34.052235, lng: -118.243683 },
-			icon: itemIcons32.wallet,
-		},
-		{
-			id: 4,
-			name: "New York, New York",
-			position: { lat: 40.712776, lng: -74.005974 },
-			icon: itemIcons32.id,
-		},
-	];
-
-	// const center = useMemo(
-	// 	() => ({
-	// 		lat: 40.1075,
-	// 		lng: -88.2272,
-	// 	}),
-	// 	[]
-	// );
-
-	const [activeMarker, setActiveMarker] = useState(null);
-	const handleActiveMarker = (marker) => {
-		if (marker === activeMarker) {
-			return;
-		}
-		setActiveMarker(marker);
-	};
-
-	return (
-		<div style={{ marginTop: "0px", background: "green", width: "10px" }}>
-			<GoogleMap zoom={14} center={center} mapContainerStyle={containerStyle} onClick={() => setActiveMarker(null)}>
-				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1196456, lng: -88.2235755 }} />
-				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1596456, lng: -88.2235755 }} />
-				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1026456, lng: -88.2235755 }} />
-				<Marker position={center} />
-
-				{data.map(({ name, icon, category, location }, id) => (
-					<Marker
-						icon={itemIcons64[`${category}`]}
-						key={id}
-						position={{ lat: location[0], lng: location[1] }}
-						// onClick={() => handleActiveMarker(id)}
-					></Marker>
-				))}
-				<Marker icon="https://i.ibb.co/CPYQTyS/airpods.png" position={{ lat: 40.1096456, lng: -88.2235755 }} />
-			</GoogleMap>
-		</div>
-	);
-}
-
 export default MapView;
 
 // {activeMarker === id ? (
 //     <InfoWindow onCloseClick={() => setActiveMarker(null)}>
-//         <div>{name}</div>
-//     </InfoWindow>
+//     <div>{name}</div>
+// </InfoWindow>
 // ) : null}
