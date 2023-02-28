@@ -106,20 +106,24 @@ export default function WithSubnavigation() {
 				</Flex>
 
 				<div style={{ background: "var(--chakra-colors-primary-500)" }}>
-					<Container
-						py={2}
-						bg={useColorModeValue("primary.500", "gray.800")}
-						borderBottom={1}
-						borderStyle={"solid"}
-						borderColor={useColorModeValue("whiteAlpha.200", "gray.900")}
-						width="100vw"
+					<div
+						style={{ padding: "0px 16px 0px 16px", background: "var(--chakra-colors-primary-500)", width: "100vw" }}
+						// bg={useColorModeValue("primary.500", "gray.800")}
+						// borderBottom={1}
+						// borderStyle={"solid"}
+						// borderColor={useColorModeValue("whiteAlpha.200", "gray.900")}
+						// width="100vw"
+						// m={0}
 					>
 						<Input
 							p={2}
 							placeholder="Search for an item..."
 							color="white"
 							variant={"filled"}
+							style={{ background: "white", borderRadius: "12px" }}
 							_active={{ background: "white" }}
+							_focus={{ background: "white" }}
+							width={"100%"}
 						/>
 						<Flex pt={2} pb={4} gap={2} w="100%" flexDirection={"row"} overflowX="scroll">
 							{categories.map(({ type, image }, index) => (
@@ -163,7 +167,7 @@ export default function WithSubnavigation() {
 								</Tag>
 							))}
 						</Flex>
-					</Container>
+					</div>
 				</div>
 
 				<Collapse in={isOpen} animateOpacity>
