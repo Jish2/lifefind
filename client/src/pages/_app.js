@@ -6,6 +6,7 @@ import { extendTheme } from "@chakra-ui/react";
 import "@fontsource/be-vietnam-pro";
 
 import { BottomNavigationStyleConfig as BottomNavigation } from "chakra-ui-bottom-navigation";
+import Head from "next/head";
 
 const fonts = {
 	heading:
@@ -41,6 +42,10 @@ const theme = extendTheme({
 function App({ Component, pageProps }) {
 	return (
 		<ChakraProvider theme={theme}>
+			<Head>
+				<title>Lifefind</title>
+				<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+			</Head>
 			<Component {...pageProps} />
 		</ChakraProvider>
 	);
