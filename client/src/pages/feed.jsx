@@ -41,10 +41,6 @@ export default function Home({ postsFromDB }) {
 	return (
 		<>
 			<div>
-				<Head>
-					<title>Lifefind</title>
-				</Head>
-
 				<Topbar />
 
 				<div style={{ width: "10px", height: "173px" }}></div>
