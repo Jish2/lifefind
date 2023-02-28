@@ -25,9 +25,10 @@ import {
 	Avatar,
 } from "@chakra-ui/react";
 import { HamburgerIcon, CloseIcon, ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { IoMdLocate } from "react-icons/io";
 import { useState } from "react";
 
-export default function WithSubnavigation() {
+export default function WithSubnavigation({ findMeClick }) {
 	const { isOpen, onToggle } = useDisclosure();
 
 	const [categories, setCategories] = useState([
@@ -85,6 +86,15 @@ export default function WithSubnavigation() {
 					</Flex>
 
 					<Stack flex={{ base: 1, md: 0 }} justify={"flex-end"} direction={"row"} spacing={6}>
+						<Icon
+							as={IoMdLocate}
+							h={6}
+							w={6}
+							onClick={() => {
+								findMeClick();
+								console.log("HERE");
+							}}
+						/>
 						{/* <Button as={"a"} fontSize={"sm"} colorScheme="orange" fontWeight={400} variant="outline" href={"#"}>
 							Sign In
 						</Button> */}
