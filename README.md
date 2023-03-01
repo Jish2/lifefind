@@ -89,9 +89,9 @@ Lifefind is an app & website that helps college students find lost items. Everyd
 
 -   [x] Map fully integrated
 -   [x] UI Designs complete
--   [] Sorting Feature
--   [] No route validation
--   [] Feature Request lifefind.co/feature
+-   [ ] Sorting Feature
+-   [ ] No route validation
+-   [ ] Feature Request lifefind.co/feature
 
 See the [open issues](https://github.com/Jish2/lifefind/issues) for a full list of proposed features (and known issues).
 
