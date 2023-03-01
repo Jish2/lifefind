@@ -99,24 +99,11 @@ See the [open issues](https://github.com/Jish2/lifefind/issues) for a full list 
 
 ## Built With
 
-### Frontend
-
-<!-- -   [![Next][next.js]][next-url] -->
-
--   Next.js
--   Chakra-UI
--   react-icons
-
-### Backend
-
--   ExpressJS
--   MongoDB
-
-### API Services
-
--   Cloudinary
--   SendGrid
--   Twilio
+| **Frontend** | **Backend** | **API Services** | **Libraries** |
+| :----------: | :---------: | :--------------: | :-----------: |
+|   Next.js    |  ExpressJS  |    Cloudinary    |     SWOT      |
+|  Chakra-UI   |   MongoDB   |     SendGrid     |               |
+| react-icons  |             |      Twilio      |               |
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
