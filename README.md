@@ -38,7 +38,7 @@ Opensource repo for Lifefind, the first app that helps college students find los
 <div align="center">
     <details>
     <summary>Table of Contents</summary>
-    <ol>
+    <ul>
         <li>
         <a href="#about-the-project">About The Project</a>
         <ul>
@@ -58,7 +58,7 @@ Opensource repo for Lifefind, the first app that helps college students find los
         <li><a href="#license">License</a></li>
         <li><a href="#contact">Contact</a></li>
         <li><a href="#acknowledgments">Acknowledgments</a></li>
-    </ol>
+    </ul>
     </details>
 </div>
 
