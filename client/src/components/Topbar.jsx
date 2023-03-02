@@ -189,8 +189,8 @@ export default function WithSubnavigation({ findMeClick }) {
 }
 
 const DesktopNav = () => {
-	const linkColor = useColorModeValue("gray.600", "gray.200");
-	const linkHoverColor = useColorModeValue("gray.800", "white");
+	const linkColor = useColorModeValue("gray.100", "gray.200");
+	const linkHoverColor = useColorModeValue("gray.200", "white");
 	const popoverContentBgColor = useColorModeValue("white", "gray.800");
 
 	return (
