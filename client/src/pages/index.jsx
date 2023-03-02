@@ -15,6 +15,12 @@ import {
 	createIcon,
 	IconProps,
 	useColorModeValue,
+	Accordion,
+	AccordionItem,
+	AccordionButton,
+	AccordionIcon,
+	AccordionPanel,
+	Link,
 } from "@chakra-ui/react";
 import { BottomNavigation } from "chakra-ui-bottom-navigation";
 import Navbar from "../components/Navbar";
@@ -209,6 +215,90 @@ export default function Home() {
 							{/* <Text color={"gray.500"}>Walk through our quick tutorial and learn how you can use Lifefind.</Text> */}
 						</Stack>
 					</Stack>
+
+					{/* FAQ Section */}
+					<Stack
+						align={"center"}
+						spacing={{ base: 8, md: 10 }}
+						py={{ base: 20, md: 28 }}
+						direction={{ base: "column", md: "column" }}
+					>
+						<Heading
+							style={{ textAlign: "center" }}
+							lineHeight={1.1}
+							fontWeight={600}
+							fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
+						>
+							<Text as={"span"} position={"relative"}>
+								Frequently asked{" "}
+							</Text>
+
+							<br />
+
+							<Text as={"span"} color={"primary.500"}>
+								Questions{" "}
+							</Text>
+						</Heading>
+						<Accordion allowToggle width={"100%"}>
+							<AccordionItem>
+								<h2>
+									<AccordionButton _expanded={{ bg: "#F79858", color: "white" }}>
+										<Box as="span" flex="1" textAlign="left">
+											Was this a Hackathon Project?
+										</Box>
+										<AccordionIcon />
+									</AccordionButton>
+								</h2>
+								<AccordionPanel pb={4}>
+									Yes. And it was absolutely robbed of the win. Check the{" "}
+									<Link
+										target="_blank"
+										rel="noopener noreferrer"
+										color="primary.500"
+										href="https://devpost.com/software/lifefind"
+									>
+										Devpost
+									</Link>{" "}
+									out.
+								</AccordionPanel>
+							</AccordionItem>
+
+							<AccordionItem>
+								<h2>
+									<AccordionButton _expanded={{ bg: "#F79858", color: "white" }}>
+										<Box as="span" flex="1" textAlign="left">
+											How do you prevent false ownership claims of found items?
+										</Box>
+										<AccordionIcon />
+									</AccordionButton>
+								</h2>
+								<AccordionPanel pb={4}>
+									While items that are found can be reported, their location and any other details about the item are
+									privately stored. A team of moderators will manually cross reference products, and if the owner of the
+									item has made a post, we will notify them.
+								</AccordionPanel>
+							</AccordionItem>
+
+							<AccordionItem>
+								<h2>
+									<AccordionButton _expanded={{ bg: "#F79858", color: "white" }}>
+										<Box as="span" flex="1" textAlign="left">
+											Why are only students allowed to use this app?
+										</Box>
+										<AccordionIcon />
+									</AccordionButton>
+								</h2>
+								<AccordionPanel pb={4}>
+									The primary issue with lost and found apps and their success is the scope. These apps try to tackle
+									spaces and demographics too large, and these unrealistic boundaries result in people finding their lost
+									items very rarely. Resultantly, we decided to restrict lost and found spaces to verified students for a
+									higher relative userbase and in turn a higher likelyhood of relocating items with their owner.
+								</AccordionPanel>
+							</AccordionItem>
+						</Accordion>
+					</Stack>
+
+					<div style={{ width: "100%", height: "300px" }}></div>
 				</Container>
 
 				<CreatePostModal onClose={onClose} isOpen={isOpen} />
